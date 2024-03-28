@@ -1,0 +1,111 @@
+#!/usr/bin/env fslpython
+"""Unit tests for the tmpnam utility. """
+
+
+import os
+import shlex
+import os.path as op
+import subprocess as sp
+import tempfile
+
+
+thisdir = op.dirname(op.abspath(__file__))
+
+
+def find_tmpnam_executable():
+    tmpnam = op.expandvars('$FSLDIR/bin/tmpnam')
+    if not op.exists(tmpnam):
+        tmpnam  = op.join(thisdir, '..', '..', 'tmpnam')
+    return op.abspath(tmpnam)
+
+
+# call tmpnam, expect it to work, check that
+# a new file with prefix "expect" was created
+def expect_success(args, env, expect):
+
+    result  = None
+    command = [find_tmpnam_executable()] + list(args)
+    try:
+        result = sp.run(command,
+                        env=env,
+                        check=True,
+                        capture_output=True)
+        result = result.stdout.decode().strip()
+
+        print(f'Command: {command}')
+        print(f'Result:  {result}')
+        assert op.exists(result), result
+        assert result.startswith(expect), (result, expect)
+
+    finally:
+        if result is not None and op.exists(result):
+            os.remove(result)
+
+
+# call tmpnam, expect it to fail
+def expect_failure(args, env):
+
+    command = [find_tmpnam_executable()] + list(args)
+    result  = sp.run(command,
+                     env=env,
+                     capture_output=True).returncode
+
+    assert result != 0
+
+
+def test_without_tmpdir():
+
+    env = os.environ.copy()
+    env.pop('TMPDIR', None)
+
+    with tempfile.TemporaryDirectory() as scratch:
+
+        scratch = op.abspath(op.realpath(scratch))
+
+        os.chdir(scratch)
+        somedir = op.join(scratch, 'somedir').rstrip('/')
+        os.mkdir(somedir)
+
+        # Note: Assuming that tempfile will revert
+        # to /tmp/ if the $TMPDIR variable is not
+        # set. This is platform dependent.
+        expect_success([],                           env, '/tmp/fsl_')
+        expect_success(['prefix'],                   env, f'{scratch}/prefix_')
+        expect_success(['somedir'],                  env, f'{somedir}_')
+        expect_success(['somedir/'],                 env, f'{somedir}/fsl_')
+        expect_success(['somedir/prefix'],           env, f'{somedir}/prefix_')
+        expect_success([op.join(somedir, 'prefix')], env, f'{somedir}/prefix_')
+
+        expect_failure(['non/existent/dir'],    env)
+        expect_failure(['/non/existent/dir'],   env)
+        expect_failure(['too', 'many', 'args'], env)
+
+
+def test_with_tmpdir():
+
+    with tempfile.TemporaryDirectory() as scratch:
+
+        scratch = op.abspath(op.realpath(scratch))
+
+        tmpdir  = op.join(scratch, 'tmpdir') .rstrip('/')
+        somedir = op.join(scratch, 'somedir').rstrip('/')
+
+        env = os.environ.copy()
+        env['TMPDIR'] = tmpdir
+
+        os.chdir(scratch)
+        os.mkdir(tmpdir)
+        os.mkdir(somedir)
+
+        expect_success([],                 env, f'{tmpdir}/fsl_')
+        expect_success(['/tmp/']      ,    env, f'{tmpdir}/fsl_')
+        expect_success(['/tmp/prefix'],    env, f'{tmpdir}/prefix_')
+        expect_success(['prefix'],         env, f'{scratch}/prefix_')
+        expect_success(['somedir'],        env, f'{scratch}/somedir_')
+        expect_success(['somedir/'],       env, f'{somedir}/fsl_')
+        expect_success(['somedir/prefix'], env, f'{somedir}/prefix_')
+
+
+if __name__ == '__main__':
+    test_without_tmpdir()
+    test_with_tmpdir()
