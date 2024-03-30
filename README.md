@@ -32,7 +32,7 @@ sudo apt-get install zlib1g zlib1g-dev
 ## Modify Makefile:
  After installing the necessary tools, modify the makefile to include additional LDFLAGS for the required libraries. 
 ```bash
-  WARPFNS_LDFLAGS = -L/path/to/your/warpfns/library  -L/path/to/your/meshclass/library -L/path/to/your/basisfield/library -L/path/to/your/miscmaths/library -lfsl-warpfns -lfsl-meshclass -lfsl-basisfield -lfsl-miscmaths
+  WARPFNS_LDFLAGS = -L/path/to/your/warpfns  -L/path/to/your/meshclass -L/path/to/your/basisfield -L/path/to/your/miscmaths -lfsl-warpfns -lfsl-meshclass -lfsl-basisfield -lfsl-miscmaths
   ZNZLIB_LDFLAGS = -L/path/to/your/znzlib/directory -lfsl-znz
 ```
   Replace `Path to your library` with the actual path to your directories. Make sure you added `$(WARPFNS_LDFLAGS)`,`$(ZNZLIB_LDFLAGS)` in the compile step of the makefile.
