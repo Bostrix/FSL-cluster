@@ -46,7 +46,7 @@ Once the modifications have been saved, you may use the following command in you
 ```bash
 make
 ```
-The command executes the Makefile in the meshclass and rebuilds it separately based on the modified configuration and source code changes. After re-running the make command, return to the main flirt directory by `cd ..` and attempt to rebuild the project again.
+The command executes the Makefile in the meshclass and rebuilds it separately based on the modified configuration and source code changes. After re-running the make command, return to the main cluster directory by `cd ..` and attempt to rebuild the project again.
 
 ## Compiling 
 Execute the appropriate compile command to build the cluster tool.
