@@ -5,10 +5,10 @@ CXX = g++
 CXXFLAGS += -fpic
 
 # Additional LDFLAGS for znzlib library
-ZNZLIB_LDFLAGS = -L/home/ubuntu/cluster/znzlib -lfsl-znz
+ZNZLIB_LDFLAGS = -L/path/to/your/znzlib -lfsl-znz
 
 # Additional LDFLAGS for warpfns library
-WARPFNS_LDFLAGS = -L/home/ubuntu/cluster/warpfns  -L/home/ubuntu/cluster/meshclass -L/home/ubuntu/cluster/basisfield -L/home/ubuntu/cluster/miscmaths -lfsl-warpfns -lfsl-meshclass -lfsl-basisfield -lfsl-miscmaths
+WARPFNS_LDFLAGS = -L/path/to/your/warpfns  -L/path/to/your/meshclass -L/path/to/your/basisfield -L/path/to/your/miscmaths -lfsl-warpfns -lfsl-meshclass -lfsl-basisfield -lfsl-miscmaths
 # Define source files
 SRCS = cluster.cc connectedcomp.cc infer.cc infertest.cc smoothest.cc 
 
