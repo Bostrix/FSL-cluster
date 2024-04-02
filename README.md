@@ -3,14 +3,14 @@
 
 Begin by cloning the project repository from GitHub onto your local machine. You can do this by running the following command in your terminal or command prompt:
 
-```
-https://github.com/Bostrix/FSL-cluster.git
+```bash
+git clone https://github.com/Bostrix/FSL-cluster.git
 ```
 This command will create a local copy of the project in a directory named "FSL-cluster".
 
 ## Navigate to Project Directory
 Change your current directory to the newly cloned project directory using the following command:
-```
+```bash
 cd FSL-cluster
 ```
 ## Installing Dependencies
@@ -38,7 +38,9 @@ sudo apt-get install zlib1g zlib1g-dev
   Replace `Path to your library` with the actual path to your directories. Make sure you added `$(WARPFNS_LDFLAGS)`,`$(ZNZLIB_LDFLAGS)` in the compile step of the makefile.
   
 - Modify Makefile of meshclass:
- modify the makefile of meshclass to include additional LDFLAGS for the required libraries. you are using newimage, miscmaths, NewNifti, cprob, znzlib and utils libraries as LDFLAGS variable in meshclass Makefile. Replace `Path to your appropriate library` with the actual path to your directories.
+ modify the makefile of meshclass to include additional LDFLAGS for the required libraries. you are using newimage, miscmaths, NewNifti, cprob, znzlib and utils libraries as LDFLAGS variable in meshclass Makefile.
+
+Replace `Path to your appropriate library` with the actual path to your directories.
 ```bash
 LDFLAGS += -L/path/to/your/newimage/directory -L/path/to/your/miscmaths/directory -L/path/to/your/NewNifti/directory -L/path/to/your/cprob/directory -L/path/to/your/znzlib/directory -L/path/to/your/utils/directory
 ```
@@ -56,18 +58,18 @@ make
 ```
 ## Resolving Shared Library Errors
 When running an executable on Linux, you may encounter errors related to missing shared libraries.This typically manifests as messages like:
-```
+```bash
 ./cluster: error while loading shared libraries: libexample.so: cannot open shared object file:No such file or directory
 ```
 To resolve these errors,Pay attention to the names of the missing libraries mentioned in the error message.Locate the missing libraries on your system. If they are not present, you may need to install the corresponding packages.If the libraries are installed in custom directories, you need to specify those directories using the `LD_LIBRARY_PATH` environment variable. For example:
-```
+```bash
 export LD_LIBRARY_PATH=/path/to/custom/libraries:$LD_LIBRARY_PATH
 ```
 Replace `/path/to/custom/libraries` with the actual path to the directory containing the missing libraries.Once the `LD_LIBRARY_PATH` is set, attempt to run the executable again.If you encounter additional missing library errors, repeat steps until all dependencies are resolved.
 
 ## Resolving "The environment variable FSLOUTPUTTYPE is not defined" errors
 If you encounter an error related to the FSLOUTPUTTYPE environment variable not being set.Setting it to `NIFTI_GZ` is a correct solution, as it defines the output format for FSL tools to NIFTI compressed with gzip.Here's how you can resolve:
-```
+```bash
 export FSLOUTPUTTYPE=NIFTI_GZ
 ```
 By running this command, you've set the `FSLOUTPUTTYPE` environment variable to `NIFTI_GZ`,which should resolve the error you encountered.
@@ -75,8 +77,7 @@ By running this command, you've set the `FSLOUTPUTTYPE` environment variable to 
 ## Running cluster
 
 After successfully compiling, you can run cluster by executing:
-```
+```bash
 ./cluster --in=<filename> --thresh=<value> [options]
 ```
-
-This will execute the ./cluster command.
+This command will execute the cluster tool.
