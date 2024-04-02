@@ -53,5 +53,5 @@ libraries:
 
 # Clean rule
 clean:
-	rm -f cluster $(OBJS) $(LIB_OBJS)
+	rm -f smoothest cluster connectedcomp $(OBJS) $(LIB_OBJS) $(shell find . -type f \( -name "*.o" -o -name "*.so" \))
 
