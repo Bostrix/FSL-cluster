@@ -16,7 +16,7 @@ CXX = g++
 
 # Specify the flags
 CXXFLAGS += -fpic
-LDFLAGS += -L/path/to/your/newimage/directory -L/path/to/your/miscmaths/directory -L/path/to/your/NewNifti/directory -L/path/to/your/cprob/directory -L/path/to/your/znzlib/directory -L/path/to/your/utils/directory
+LDFLAGS += -L${HOME}/FSL-cluster/newimage -L${HOME}/FSL-cluster/miscmaths -L${HOME}/FSL-cluster/NewNifti -L${HOME}/FSL-cluster/cprob -L${HOME}/FSL-cluster/znzlib -L${HOME}/FSL-cluster/utils
 
 # Define targets
 all: libfsl-meshclass.so ${XFILES}

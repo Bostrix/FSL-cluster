@@ -5,10 +5,10 @@ CXX = g++
 CXXFLAGS += -fpic
 
 # Additional LDFLAGS for znzlib library
-ZNZLIB_LDFLAGS = -L/path/to/your/znzlib -lfsl-znz
+ZNZLIB_LDFLAGS = -L${HOME}/FSL-cluster/znzlib -lfsl-znz
 
 # Additional LDFLAGS for warpfns library
-WARPFNS_LDFLAGS = -L/path/to/your/warpfns  -L/path/to/your/meshclass -L/path/to/your/basisfield -L/path/to/your/miscmaths -lfsl-warpfns -lfsl-meshclass -lfsl-basisfield -lfsl-miscmaths
+WARPFNS_LDFLAGS = -L${HOME}/FSL-cluster/warpfns  -L${HOME}/FSL-cluster/meshclass -L${HOME}/FSL-cluster/basisfield -L${HOME}/FSL-cluster/miscmaths -lfsl-warpfns -lfsl-meshclass -lfsl-basisfield -lfsl-miscmaths
 # Define source files
 SRCS = cluster.cc connectedcomp.cc infer.cc infertest.cc smoothest.cc 
 
@@ -21,13 +21,13 @@ LIB_SRCS = $(foreach dir,$(LIB_DIRS),$(wildcard $(dir)/*.cc))
 LIB_OBJS = $(LIB_SRCS:.cc=.o)
  
 # Define targets
-all: smoothest cluster connectedcomp
+all: smoothest fsl-cluster connectedcomp
  
 # Compile the final executable
 smoothest: libraries smoothest.o $(LIB_OBJS)
 	$(CXX) $(CXXFLAGS) -o $@ smoothest.o $(LIB_OBJS) $(LDFLAGS) $(ZNZLIB_LDFLAGS)  -lblas -llapack -lz
 
-cluster: libraries cluster.o infer.o $(LIB_OBJS)
+fsl-cluster: libraries cluster.o infer.o $(LIB_OBJS)
 	$(CXX) $(CXXFLAGS) -o $@ cluster.o infer.o $(LIB_OBJS) $(LDFLAGS) $(ZNZLIB_LDFLAGS) $(WARPFNS_LDFLAGS)  -lblas -llapack -lz
 
 connectedcomp: libraries connectedcomp.o $(LIB_OBJS)
@@ -53,5 +53,5 @@ libraries:
 
 # Clean rule
 clean:
-	rm -f smoothest cluster connectedcomp $(OBJS) $(LIB_OBJS) $(shell find . -type f \( -name "*.o" -o -name "*.so" \))
+	rm -f smoothest fsl-cluster connectedcomp $(OBJS) $(LIB_OBJS) $(shell find . -type f \( -name "*.o" -o -name "*.so" \))
 
