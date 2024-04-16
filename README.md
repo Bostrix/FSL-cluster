@@ -36,14 +36,7 @@ To compile Cluster, follow these steps:
 
 - Confirm that the file `point_list.h` within the warpfns library accurately includes the path to `armawrap/newmat.h`.
 
-- Verify the accurate paths in meshclass's Makefile:
-verify the correct path in the makefile of meshclass to include additional LDFLAGS for the required libraries. For instance, if utilizing the newimage, miscmaths, NewNifti, cprob, znzlib and utils libraries as LDFLAGS variable in meshclass makefile,ensure that the correct path is present in the makefile.
-
-Once the necessary adjustments have been confirmed, you can utilize the following command in your terminal to rebuild the meshclass separately:
-```bash
-make
-```
-The command executes the Makefile in the meshclass and rebuilds it separately based on the modified configuration and source code changes. After re-running the make command, return to the main cluster directory by `cd ..` and attempt to rebuild the project again.
+- Verify the accurate paths in meshclass's Makefile: Ensure the correct linker paths for the newimage, miscmaths, NewNifti, znzlib, cprob and utils libraries are included.
 
 - Compiling: 
 Execute the appropriate compile command to build the cluster tool.
